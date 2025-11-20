@@ -109,7 +109,7 @@ var netCoreProject = new {
  Task("Default")
      .IsDependentOn("Restore-NetCore")
      .IsDependentOn("Publish-NetCore")
-	 .IsDependentOn("Package-Mac")
+     /*.IsDependentOn("Package-Mac")*/
      /*.IsDependentOn("Zip-NetCore")*/;
 
  RunTarget(target);

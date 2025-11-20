@@ -50,7 +50,50 @@ How to run on Mac:
 
 # Build from sources
 
-1. Install dotnet 6 or above from https://dotnet.microsoft.com/en-us/download/dotnet
-2. Clone repository : `git clone https://github.com/icsharpcode/AvaloniaILSpy.git`.
-3. Run build script: `dotnet tool restore` and `dotnet cake`
-4. Artifacts will be located in subdirectory `artifacts`.
+## Prerequisites
+
+- .NET 6.0 SDK or above: https://dotnet.microsoft.com/en-us/download/dotnet
+- Git
+
+## Build Instructions
+
+### Linux x64
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/icsharpcode/AvaloniaILSpy.git
+   cd AvaloniaILSpy
+   ```
+
+2. Restore dotnet tools (including Cake build tool):
+   ```bash
+   dotnet tool restore
+   ```
+
+3. Run the build script:
+   ```bash
+   dotnet cake
+   ```
+
+4. The build artifacts will be located in the `artifacts/linux-x64/` subdirectory.
+
+5. To run the built application:
+   ```bash
+   chmod +x artifacts/linux-x64/ILSpy
+   ./artifacts/linux-x64/ILSpy
+   ```
+
+### Alternative: Build without Cake
+
+You can also build directly with dotnet CLI:
+
+```bash
+dotnet restore ILSpy/ILSpy.csproj
+dotnet publish ILSpy/ILSpy.csproj -c Release -r linux-x64 --self-contained -o ./artifacts/linux-x64
+```
+
+## Notes
+
+- This fork currently only supports building for Linux x64.
+- The build requires .NET 6.0 SDK as specified in `global.json`.
+- The Cake build tool version is specified in `.config/dotnet-tools.json`.
