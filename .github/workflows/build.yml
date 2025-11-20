@@ -18,28 +18,18 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
+    - name: Restore dotnet tools
+      run: dotnet tool restore
     - name: Run the Cake script
-      uses: cake-build/cake-action@v2
-      with:
-        script-path: build.cake
+      run: dotnet cake
     - name: Zip Linux x64
       if: matrix.platform == 'ubuntu-latest'
       run: 7z a -tzip artifacts/ILSpy-linux-x64-Release.zip artifacts/linux-x64/*
-    - name: Zip Linux arm64
-      if: matrix.platform == 'ubuntu-latest'
-      run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*    
     - name: Upload Linux x64 artifacts
       if: matrix.platform == 'ubuntu-latest'
       uses: actions/upload-artifact@v4
       with:
         name: Linux x64 Release
         path: artifacts/ILSpy-linux-x64-Release.zip
-        if-no-files-found: error   
-    - name: Upload Linux arm64 artifacts
-      if: matrix.platform == 'ubuntu-latest'
-      uses: actions/upload-artifact@v4
-      with:
-        name: Linux arm64 Release
-        path: artifacts/ILSpy-linux-arm64-Release.zip
         if-no-files-found: error
 
