@@ -10,16 +10,16 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
     - name: Run the Cake script
-      uses: cake-build/cake-action@v1
+      uses: cake-build/cake-action@v2
       with:
         script-path: build.cake
     - name: Zip Linux x64
@@ -27,83 +27,19 @@ jobs:
       run: 7z a -tzip artifacts/ILSpy-linux-x64-Release.zip artifacts/linux-x64/*
     - name: Zip Linux arm64
       if: matrix.platform == 'ubuntu-latest'
-      run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*
-    - name: Create DMG for MacOS x64
-      if: matrix.platform == 'macos-latest'
-      run: |
-        brew install create-dmg
-        create-dmg \
-          --volname "ILSpy Installer" \
-          --volicon "artifacts/osx-x64/ILSpy.app/Contents/Resources/ILSpy.icns" \
-          --window-pos 200 120 \
-          --window-size 800 400 \
-          --icon-size 100 \
-          --icon "ILSpy.app" 200 190 \
-          --hide-extension "ILSpy.app" \
-          --app-drop-link 600 185 \
-          "ILSpy-macos-x64-Release.dmg" \
-          "artifacts/osx-x64/"
-    - name: Create DMG for arm64
-      if: matrix.platform == 'macos-latest'
-      run: |
-        brew install create-dmg
-        create-dmg \
-          --volname "ILSpy Installer" \
-          --volicon "artifacts/osx-arm64/ILSpy.app/Contents/Resources/ILSpy.icns" \
-          --window-pos 200 120 \
-          --window-size 800 400 \
-          --icon-size 100 \
-          --icon "ILSpy.app" 200 190 \
-          --hide-extension "ILSpy.app" \
-          --app-drop-link 600 185 \
-          "ILSpy-macos-arm64-Release.dmg" \
-          "artifacts/osx-arm64/"
-    - name: Zip Windows x64
-      if: matrix.platform == 'windows-latest'
-      run: 7z a -tzip artifacts\ILSpy-win-x64-Release.zip artifacts\win-x64\*   
-    - name: Zip Windows arm64
-      if: matrix.platform == 'windows-latest'
-      run: 7z a -tzip artifacts\ILSpy-win-arm64-Release.zip artifacts\win-arm64\*    
+      run: 7z a -tzip artifacts/ILSpy-linux-arm64-Release.zip artifacts/linux-arm64/*    
     - name: Upload Linux x64 artifacts
       if: matrix.platform == 'ubuntu-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Linux x64 Release
         path: artifacts/ILSpy-linux-x64-Release.zip
         if-no-files-found: error   
     - name: Upload Linux arm64 artifacts
       if: matrix.platform == 'ubuntu-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Linux arm64 Release
         path: artifacts/ILSpy-linux-arm64-Release.zip
-        if-no-files-found: error
-    - name: Upload macOS x64 artifacts
-      if: matrix.platform == 'macos-latest'
-      uses: actions/upload-artifact@v2
-      with:
-        name: macOS x64 Release
-        path: ILSpy-macos-x64-Release.dmg
-        if-no-files-found: error
-    - name: Upload macOS arm64 artifacts
-      if: matrix.platform == 'macos-latest'
-      uses: actions/upload-artifact@v2
-      with:
-        name: macOS arm64 Release
-        path: ILSpy-macos-arm64-Release.dmg
-        if-no-files-found: error
-    - name: Upload Windows x64 artifacts
-      if: matrix.platform == 'windows-latest'
-      uses: actions/upload-artifact@v2
-      with:
-        name: Windows x64 Release
-        path: artifacts/ILSpy-win-x64-Release.zip
-        if-no-files-found: error
-    - name: Upload Windows arm64 artifacts
-      if: matrix.platform == 'windows-latest'
-      uses: actions/upload-artifact@v2
-      with:
-        name: Windows arm64 Release
-        path: artifacts/ILSpy-win-arm64-Release.zip
         if-no-files-found: error
 
