@@ -52,7 +52,7 @@ How to run on Mac:
 
 ## Prerequisites
 
-- .NET 6.0 SDK or above: https://dotnet.microsoft.com/en-us/download/dotnet
+- .NET 8.0 SDK or above: https://dotnet.microsoft.com/en-us/download/dotnet
 - Git
 
 ## Build Instructions
@@ -95,5 +95,5 @@ dotnet publish ILSpy/ILSpy.csproj -c Release -r linux-x64 --self-contained -o ./
 ## Notes
 
 - This fork currently only supports building for Linux x64.
-- The build requires .NET 6.0 SDK as specified in `global.json`.
+- The build requires .NET 8.0 SDK as specified in `global.json`.
 - The Cake build tool version is specified in `.config/dotnet-tools.json`.
